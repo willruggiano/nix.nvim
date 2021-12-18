@@ -6,10 +6,15 @@ end
 local nix = {}
 
 nix.setup = function(opts)
-  -- TODO:
+  vim.validate {
+    opts = { opts, "table", true },
+  }
 end
 
 nix.build = require "nix.build"
 nix.docs = require "nix.docs"
+nix.nix = function(background, args)
+  lib.nix_command(background, nil, args)
+end
 
 return nix

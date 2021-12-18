@@ -1,0 +1,40 @@
+name: panvimdoc
+
+on:
+  push:
+    paths:
+      - README.md
+    branches:
+      - main
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    name: pandoc to vimdoc
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup-git
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          printf 'VIMDOC_BRANCH=bot/vimdoc/%s\n' ${GITHUB_REF#refs/heads/} >> $GITHUB_ENV
+      - name: checkout-doc-branch
+        run: git checkout -b ${VIMDOC_BRANCH}
+      - name: panvimdoc
+        uses: kdheepak/panvimdoc@main
+        with:
+          vimdoc: nix
+          description: A Neovim plugin for better Nix integration
+      - name: create-pr
+        run: |
+          if ! [[ -z $(git status -s) ]]; then
+            git add doc/nix.txt
+            git commit -m "chore: generate vimdoc"
+            git push -f https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY} ${VIMDOC_BRANCH}
+            gh pr create --fill --base ${GITHUB_REF#refs/heads/} --head ${VIMDOC_BRANCH} || true
+          fi

@@ -1,15 +1,5 @@
-local job_ctrl = require "firvish.job_control"
+local lib = require "nix.lib"
 
-return function(background, opts)
-  background = background or false
-  opts = opts or {}
-  job_ctrl.start_job {
-    cmd = table.merge({ "nix", "run", ".#docs" }, opts),
-    cwd = vim.fn.getcwd(),
-    filetype = "log",
-    title = "nix-run",
-    output_qf = false,
-    is_background_job = background,
-    notify = background,
-  }
+return function(background, args)
+  lib.nix_command(background, { title = "emanote" }, "run", ".#docs", args)
 end
