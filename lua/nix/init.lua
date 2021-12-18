@@ -1,3 +1,8 @@
+local lib = require "nix.lib"
+if not pcall(require, "firvish") then
+  lib.error "firvish.nvim is a required dependency, please install it"
+end
+
 local nix = {}
 
 nix.setup = function(opts)
@@ -5,5 +10,6 @@ nix.setup = function(opts)
 end
 
 nix.build = require "nix.build"
+nix.docs = require "nix.docs"
 
 return nix

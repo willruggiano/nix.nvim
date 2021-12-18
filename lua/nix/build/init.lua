@@ -1,17 +1,3 @@
-local has_notify, notify = pcall(require, "notify")
-if not has_notify then
-  print "nvim-notify not installed, all output will be printed to stdout/stderr"
-end
-if not pcall(require, "firvish") then
-  local msg = "firvish.nvim is a required dependency, please install it"
-  if has_notify then
-    notify(msg, "error", { title = "nix.nvim" })
-  else
-    error("[nix.nvim] " .. msg)
-  end
-  return
-end
-
 local job_ctrl = require "firvish.job_control"
 
 return function(background, opts)
