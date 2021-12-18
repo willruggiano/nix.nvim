@@ -6,6 +6,7 @@ Table of Contents                                      *nix-table-of-contents*
 1. nix.nvim                                                     |nix-nix.nvim|
   - Installation                                            |nix-installation|
   - Commands                                                    |nix-commands|
+  - Lua API                                                      |nix-lua-api|
 
 ==============================================================================
 1. nix.nvim                                                     *nix-nix.nvim*
@@ -32,29 +33,93 @@ INSTALLATION                                                *nix-installation*
 
 COMMANDS                                                        *nix-commands*
 
-:NIX[!] ~
+                                                                    *nix-:Nix*
 
-The `Nix` command is a general purpose `nix` wrapper. Think `:Git` from
-vim-fugitive. When given, <bang> will cause the command to run in the
-background and it’s output be redirected to a quickfix list.
+:Nix[!]                                The `Nix` command is a general purpose
+                                       `nix` wrapper. Think `:Git` from
+                                       vim-fugitive. When given, <bang> will
+                                       cause the command to run in the
+                                       background and it’s output be
+                                       redirected to a quickfix list.
 
-:NIXBUILD[!] ~
 
-The `NixBuild` command executes `nix build -L` in the current directory, which
-will build the defaultPackage for the flake <https://nixos.wiki/wiki/Flakes> in
-the current directory. When given, <bang> will cause the command to run in the
-background and it’s output be redirected to a quickfix list.
+                                                               *nix-:NixBuild*
 
-:NIXDOCS[!] ~
+:NixBuild[!]                           The `NixBuild` command executes `nix
+                                       build -L` in the current directory,
+                                       which will build the defaultPackage for
+                                       the flake
+                                       <https://nixos.wiki/wiki/Flakes> in the
+                                       current directory. When given, <bang>
+                                       will cause the command to run in the
+                                       background and it’s output be
+                                       redirected to a quickfix list.
 
-The `NixDocs` command executes `nix run .#docs` in the current directory. This
-command by default runs in the **background**. To cause it to run in the
-foreground, use the <bang> version.
+
+                                                                *nix-:NixDocs*
+
+:NixDocs[!]                            The `NixDocs` command executes `nix run
+                                       .#docs` in the current directory. This
+                                       command by default runs in the
+                                       **background**. To cause it to run in
+                                       the foreground, use the <bang> version.
+
 
 **Note that this command requires that your flake has a "docs" app.** See this
 example <https://github.com/willruggiano/particle/blob/main/flake.nix> which
 starts a Emanote <https://note.ema.srid.ca/> webserver that hosts markdown
 documentation.
+
+LUA API                                                          *nix-lua-api*
+
+                                                         *nix-Wrapper-methods*
+
+>
+    -- require("nix")
+    
+    -- Runs `nix build -L`
+    -- @param background whether to run the command in the background
+    -- @param[opt] args additional arguments to pass to the command
+    -- @usage require("nix").build(true, { ".#myPackage" })
+    -- @see nix_command()
+    build(background, args)
+    
+    
+    -- Runs `nix run .#docs`
+    -- @param background whether to run the command in the background
+    -- @param[opt] args additional arguments to pass to the command
+    -- @usage require("nix").docs(true, {})
+    -- @see nix_command()
+    docs(background, args)
+    
+    
+    
+    -- Runs an arbitrary nix command
+    -- @param background whether to run the command in the background
+    -- @param args additional arguments to pass to the command
+    -- @usage require("nix").nix(false, "flake", "show")
+    -- @see nix_command()
+    nix(background, args)
+<
+
+
+                                                         *nix-Library-methods*
+
+>
+    -- require("nix.lib")
+    
+    -- Spawns a firvish job that executes the specified nix command
+    -- @param background whether to run the command in the background
+    -- @param[opt] opts options to pass to `firvish.job_control.start_job`
+    -- @param ... arguments to pass to the command 
+    -- @usage require("nix.lib").nix_command(true, { title = "flake-show" }, "flake", "show")
+    nix_command(background, opts, ...)
+<
+
+
+Library methods                        Make sure to check out firvish.nvim
+                                       <https://github.com/Furkanzmc/firvish.nvim>!
+
 
 Generated by panvimdoc <https://github.com/kdheepak/panvimdoc>
 
