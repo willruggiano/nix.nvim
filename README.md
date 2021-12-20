@@ -38,9 +38,15 @@ This command by default runs in the **background**. To cause it to run in the fo
 
 **Note that this command requires that your flake has a "docs" app.** See [this example][particle] which starts a [Emanote][emanote] webserver that hosts markdown documentation.
 
+#### :NixosRebuild[!] {arg}
+
+The `NixosRebuild` command executes `nixos-rebuild`, passing {arg} (and any additional args) to the underlying command.
+When given, <bang> will cause the command to run in the background and it's output be redirected to a quickfix list.
+
 ## Lua API
 
 #### Wrapper methods
+
 ```lua
 -- require("nix")
 
@@ -67,6 +73,16 @@ docs(background, args)
 -- @usage require("nix").nix(false, "flake", "show")
 -- @see nix_command()
 nix(background, args)
+
+
+
+-- require("nixos")
+
+-- Runs `nixos-rebuild`
+-- @param background whether to run the command in the background
+-- @param args additional arguments to pass to the command
+-- @usage require("nixos").rebuild(false, "switch")
+rebuild(background, args)
 ```
 
 #### Library methods
@@ -77,7 +93,7 @@ nix(background, args)
 -- Spawns a firvish job that executes the specified nix command
 -- @param background whether to run the command in the background
 -- @param[opt] opts options to pass to `firvish.job_control.start_job`
--- @param ... arguments to pass to the command 
+-- @param ... arguments to pass to the command
 -- @usage require("nix.lib").nix_command(true, { title = "flake-show" }, "flake", "show")
 nix_command(background, opts, ...)
 ```

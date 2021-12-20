@@ -12,7 +12,9 @@ nix.setup = function(opts)
 end
 
 nix.build = require "nix.build"
+
 nix.docs = require "nix.docs"
+
 nix.nix = function(background, args)
   lib.nix_command(background, nil, args)
 end

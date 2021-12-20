@@ -26,17 +26,18 @@ lib.info = function(msg)
   show_message(msg)
 end
 
-lib.nix_command = function(background, opts, ...)
-  local args = vim.tbl_flatten { ... }
+lib.run_command = function(opts)
   vim.validate {
-    background = { background, "boolean" },
-    opts = { opts, "table", true },
-    args = { args, "table" },
+    opts = { opts, "table" },
   }
   local job_ctrl = require "firvish.job_control"
-  local cmd = table.merge({ "nix" }, args)
-  local job = {
-    cmd = cmd,
+  job_ctrl.start_job(opts)
+end
+
+lib.nix_command = function(background, opts, ...)
+  local args = vim.tbl_flatten { ... }
+  lib.run_command {
+    cmd = table.merge({ "nix" }, args),
     cwd = vim.fn.getcwd(),
     filetype = "log",
     title = "nix",
@@ -44,7 +45,6 @@ lib.nix_command = function(background, opts, ...)
     is_background_job = background,
     notify = background,
   }
-  job_ctrl.start_job(vim.tbl_extend("force", job, opts or {}))
 end
 
 return lib
