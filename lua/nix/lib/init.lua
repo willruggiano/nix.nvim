@@ -27,16 +27,24 @@ lib.info = function(msg)
 end
 
 lib.run_command = function(opts)
+  local ok, job_ctrl = pcall(require, "firvish.job_control")
+  if not ok then
+    lib.error "firvish.nvim is a required dependency, please install it"
+    return
+  end
   vim.validate {
     opts = { opts, "table" },
   }
-  local job_ctrl = require "firvish.job_control"
   job_ctrl.start_job(opts)
 end
 
 lib.nix_command = function(background, opts, ...)
+  vim.validate {
+    background = { background, "boolean" },
+    opts = { opts, "table", true },
+  }
   local args = vim.tbl_flatten { ... }
-  lib.run_command {
+  local job = {
     cmd = table.merge({ "nix" }, args),
     cwd = vim.fn.getcwd(),
     filetype = "log",
@@ -45,6 +53,7 @@ lib.nix_command = function(background, opts, ...)
     is_background_job = background,
     notify = background,
   }
+  lib.run_command(vim.tbl_extend("force", job, opts or {}))
 end
 
 return lib
