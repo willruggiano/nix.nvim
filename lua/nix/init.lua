@@ -13,7 +13,7 @@ nix.build = function(background, args)
   -- other tools that make it easy for their output to be consumed by vim.
   -- Alternatively, I supposed we could fairly easily snip off the /nix/store/path/to/source base
   -- leaving only the relative filepath? I think that would work.
-  lib.nix_command(background, { title = "nix-build" }, "build", "-L", args)
+  lib.nix_command(background, { title = "nix-build", filetype = "terminal" }, "build", "-L", args)
 end
 
 nix.docs = function(background, args)

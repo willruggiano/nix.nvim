@@ -1,8 +1,10 @@
+local lib = require "nix.lib"
+
 local M = {}
 
 M.rebuild = function(background, args)
   require("nix.lib").run_command {
-    cmd = table.merge({ "sudo", "nixos-rebuild", "switch" }, args),
+    cmd = lib.tbl_merge({ "sudo", "nixos-rebuild", "switch" }, args),
     cwd = vim.fn.getcwd(),
     filetype = "log",
     title = "nixos-rebuild-switch",

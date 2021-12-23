@@ -1,29 +1,18 @@
-local has_notify, notify = pcall(require, "notify")
-if not has_notify then
-  print "nvim-notify not installed, all output will be printed to stdout/stderr"
-end
-
-local function show_message(msg, error)
-  if has_notify then
-    local level = (error and "error") or "info"
-    notify(msg, level, { title = "nix.nvim" })
-  else
-    if error then
-      error("[nix.nvim] " .. msg)
-    else
-      print("[nix.nvim] " .. msg)
-    end
-  end
-end
-
 local lib = {}
 
 lib.error = function(msg)
-  show_message(msg, true)
+  error("[nix.nvim] " .. msg)
 end
 
 lib.info = function(msg)
-  show_message(msg)
+  print("[nix.nvim] " .. msg)
+end
+
+lib.tbl_merge = function(t0, t1)
+  for _, v in ipairs(t1) do
+    table.insert(t0, v)
+  end
+  return t0
 end
 
 lib.run_command = function(opts)
@@ -45,7 +34,7 @@ lib.nix_command = function(background, opts, ...)
   }
   local args = vim.tbl_flatten { ... }
   local job = {
-    cmd = table.merge({ "nix" }, args),
+    cmd = lib.tbl_merge({ "nix" }, args),
     cwd = vim.fn.getcwd(),
     filetype = "log",
     title = "nix",

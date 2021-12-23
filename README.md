@@ -10,12 +10,7 @@ use {
   config = function()
     require("nix").setup {}
   end,
-  requires = {
-    -- Required:
-    "Furkanzmc/firvish.nvim",
-    -- Optional:
-    "rcarriga/nvim-notify",  -- will print to stdout if not installed
-  },
+  requires = "Furkanzmc/firvish.nvim",
 }
 ```
 
