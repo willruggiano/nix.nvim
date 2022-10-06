@@ -1,0 +1,12 @@
+nix-:Nix	nix.txt	/*nix-:Nix*
+nix-:NixBuild	nix.txt	/*nix-:NixBuild*
+nix-:NixDocs	nix.txt	/*nix-:NixDocs*
+nix-:NixosRebuild	nix.txt	/*nix-:NixosRebuild*
+nix-Library-methods	nix.txt	/*nix-Library-methods*
+nix-Wrapper-methods	nix.txt	/*nix-Wrapper-methods*
+nix-commands	nix.txt	/*nix-commands*
+nix-installation	nix.txt	/*nix-installation*
+nix-lua-api	nix.txt	/*nix-lua-api*
+nix-nix.nvim	nix.txt	/*nix-nix.nvim*
+nix-table-of-contents	nix.txt	/*nix-table-of-contents*
+nix.txt	nix.txt	/*nix.txt*

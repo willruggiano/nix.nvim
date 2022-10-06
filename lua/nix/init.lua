@@ -1,11 +1,9 @@
 local lib = require "nix.lib"
+local plugin = require "nix.plugin"
+
 local nix = {}
 
-nix.setup = function(opts)
-  vim.validate {
-    opts = { opts, "table", true },
-  }
-end
+nix.setup = plugin.setup
 
 nix.build = function(background, args)
   -- TODO: The problem here is that the sources are copied into the /nix/store and so our quickfix

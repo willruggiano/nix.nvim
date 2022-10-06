@@ -1,0 +1,7 @@
+Features
+[ ] Completion sources for nvim-cmp
+[ ] null-ls code actions
+[ ] Update flake inputs to newer revision
+[ ] Update niv sources to newer revision
+[ ] Update src attributes in fetch calls to newer revision
+[ ] Open project homepage
